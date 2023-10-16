@@ -49,6 +49,8 @@ services:
   cli:
     build:
       dockerfile: ./Dockerfile
+    deploy:
+      replicas: 3
     networks:
       - data
 
