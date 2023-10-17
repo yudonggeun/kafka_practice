@@ -14,7 +14,9 @@ services:
       KAFKA_LOG_DIRS: /Users/dvwy/Documents/test/kafka_2_12-2_5_0/data
       KAFKA_NUM_PARTITIONS: 3
       KAFKA_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+#      KAFKA_LISTENERS: PLAINTEXT://host.docker.internal:9092
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://host.docker.internal:9092
       KAFKA_SOCKET_SEND_BUFFER_BYTES: 102400
       KAFKA_SOCKET_RECEIVE_BUFFER_BYTES: 102400
       KAFKA_SOCKET_REQUEST_MAX_BYTES: 104857600
@@ -48,7 +50,16 @@ services:
 
   cli:
     build:
-      dockerfile: ./Dockerfile
+      dockerfile_inline: |
+        FROM adoptopenjdk/openjdk11
+        LABEL authors="ydong"
+        ENV CLI_DIR=/cli
+
+        RUN mkdir ${CLI_DIR}
+        WORKDIR ${CLI_DIR}
+        RUN curl https://archive.apache.org/dist/kafka/2.5.0/kafka_2.12-2.5.0.tgz --output kafka.tgz --output kafka.tgz
+        RUN tar -xvf kafka.tgz
+        ENTRYPOINT ["top", "-b"]
     deploy:
       replicas: 3
     networks:

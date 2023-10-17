@@ -21,7 +21,7 @@ cd /bin
 ./kafka-topics.sh \
 --create \
 --bootstrap-server kafka:9092 \ 
--- topic hello.kafka
+--topic hello.kafka
 ```
 추가적인 옵션을 설정하지 않으면 기본 설정에 따라 토픽이 생성된다.
 
