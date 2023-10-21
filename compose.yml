@@ -11,7 +11,7 @@ services:
       KAFKA_NUM_NETWORK_THREADS: 3
       KAFKA_NUM_IO_THREADS: 8
 
-      KAFKA_LOG_DIRS: /Users/dvwy/Documents/test/kafka_2_12-2_5_0/data
+#      KAFKA_LOG_DIRS: /Users/dvwy/Documents/test/kafka_2_12-2_5_0/data
       KAFKA_NUM_PARTITIONS: 3
       KAFKA_LISTENERS: PLAINTEXT://kafka:9092
 #      KAFKA_LISTENERS: PLAINTEXT://host.docker.internal:9092
@@ -32,8 +32,8 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
     networks:
       - data
-    volumes:
-      - "./log:/Users/dvwy/Documents/test/kafka_2_12-2_5_0/data"
+#    volumes:
+#      - "./log:/Users/dvwy/Documents/test/kafka_2_12-2_5_0/data"
 
   zookeeper:
     image: confluentinc/cp-zookeeper
@@ -53,10 +53,9 @@ services:
       dockerfile_inline: |
         FROM adoptopenjdk/openjdk11
         LABEL authors="ydong"
-        ENV CLI_DIR=/cli
 
-        RUN mkdir ${CLI_DIR}
-        WORKDIR ${CLI_DIR}
+        RUN mkdir cli
+        WORKDIR /cli 
         RUN curl https://archive.apache.org/dist/kafka/2.5.0/kafka_2.12-2.5.0.tgz --output kafka.tgz --output kafka.tgz
         RUN tar -xvf kafka.tgz
         ENTRYPOINT ["top", "-b"]
