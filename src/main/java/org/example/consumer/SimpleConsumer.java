@@ -3,7 +3,7 @@ package org.example.consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.example.SimpleProducer;
+import org.example.producer.SimpleProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,7 @@ import java.util.Properties;
  */
 public class SimpleConsumer {
     private final static Logger logger = LoggerFactory.getLogger(SimpleProducer.class);
-    private final static String TOPIC_NAME = "test";
+    private final static String TOPIC_NAME = "stream_log_copy";
     private final static String BOOTSTRAP_SERVERS = "localhost:9092";
     private final static String GROUP_ID = "test-group";
 

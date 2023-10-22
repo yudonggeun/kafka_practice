@@ -2,15 +2,13 @@ package org.example.consumer;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.ConsumerGroupState;
 import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.example.SimpleProducer;
+import org.example.producer.SimpleProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -22,6 +20,7 @@ public class ShutdownHookSyncCommitConsumer {
     private static KafkaConsumer<String, String> consumer;
 
     public static void main(String[] args) {
+        Runtime.getRuntime().addShutdownHook(new ShutdownThead());
         var configs = new Properties();
 
         configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);

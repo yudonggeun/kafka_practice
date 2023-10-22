@@ -5,7 +5,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.example.SimpleProducer;
+import org.example.producer.SimpleProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
