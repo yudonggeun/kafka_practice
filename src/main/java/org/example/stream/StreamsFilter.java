@@ -8,7 +8,7 @@ import org.apache.kafka.streams.kstream.KStream;
 
 import java.util.Properties;
 
-public class SimpleStreamApplication {
+public class StreamsFilter {
     private final static String BOOTSTRAP_SERVERS = "localhost:9092";
     private final static String APPLICATION_NAME = "streams-application";
     private final static String STREAM_LOG = "test";
@@ -25,7 +25,9 @@ public class SimpleStreamApplication {
 
         var builder = new StreamsBuilder();
         KStream<String, String> streamLog = builder.stream(STREAM_LOG);
-        streamLog.to(STREAM_LOG_COPY);
+        streamLog
+                .filter((key, value) -> value.length() > 5)
+                .to(STREAM_LOG_COPY);
 
         var streams = new KafkaStreams(builder.build(), props);
         streams.start();

@@ -4,15 +4,19 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.kstream.GlobalKTable;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.KTable;
 
 import java.util.Properties;
 
-public class SimpleStreamApplication {
+public class KStreamJoinGlobalKTable {
     private final static String BOOTSTRAP_SERVERS = "localhost:9092";
-    private final static String APPLICATION_NAME = "streams-application";
-    private final static String STREAM_LOG = "test";
-    private final static String STREAM_LOG_COPY = "stream_log_copy";
+    private final static String APPLICATION_NAME = "order-join-application";
+
+    private final static String ADDRESS_GLOBAL_TABLE = "address";
+    private final static String ORDER_STREAM = "order";
+    private final static String ORDER_JOIN_STREAM = "order_join";
 
     public static void main(String[] args) {
         var props = new Properties();
@@ -24,11 +28,16 @@ public class SimpleStreamApplication {
                 Serdes.String().getClass());
 
         var builder = new StreamsBuilder();
-        KStream<String, String> streamLog = builder.stream(STREAM_LOG);
-        streamLog.to(STREAM_LOG_COPY);
+
+        GlobalKTable<String, String> addressTable = builder.globalTable(ADDRESS_GLOBAL_TABLE);
+        KStream<String, String> orderStream = builder.stream(ORDER_STREAM);
+
+        orderStream.join(addressTable,
+                        (orderKey, orderValue) -> orderKey,
+                        (order, address) -> order + " send to " + address)
+                .to(ORDER_JOIN_STREAM);
 
         var streams = new KafkaStreams(builder.build(), props);
         streams.start();
-
     }
 }

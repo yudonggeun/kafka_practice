@@ -24,16 +24,13 @@ public class SimpleProducer {
 
         try (var producer = new KafkaProducer<String, String>(configs)) {
 
-            String messageValue = "testMessage";
-            var nonKeyRecord = new ProducerRecord<String, String>(TOPIC_NAME, messageValue);
-            var keyRecord = new ProducerRecord<>(TOPIC_NAME, "pangyo", "this key value");
-            var recordKeyAndPartition = new ProducerRecord<>(TOPIC_NAME, 0, "key1", "this value");
+            String messageValue = "test";
 
-            producer.send(nonKeyRecord);
-            producer.send(keyRecord);
-            producer.send(recordKeyAndPartition);
+            producer.send(new ProducerRecord<>(TOPIC_NAME, messageValue));
+            producer.send(new ProducerRecord<>(TOPIC_NAME, "pangyo", "this key value"));
+            producer.send(new ProducerRecord<>(TOPIC_NAME, 0, "key1", "this value"));
 
-            logger.info("{}", nonKeyRecord);
+            logger.info("{}", new ProducerRecord<String, String>(TOPIC_NAME, messageValue));
 
             producer.flush();
         }
